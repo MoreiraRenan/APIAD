@@ -7,6 +7,10 @@ export class AppController {
 
   @Get('reset/:matricula')
   async getHello(@Param('matricula') matricula: string) {
-    return await this.appService.reset('matricula');
+    return await this.appService.reset(matricula);
   }
+@Get('teste')
+async getT(){
+	return 'OK';
+}	
 }

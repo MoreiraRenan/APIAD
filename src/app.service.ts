@@ -32,9 +32,7 @@ export class AppService {
 
 async reset(matricula : string) : Promise<any>  {
   try {
-    
- 
-  var opts = {
+ var opts = {
       filter: `(cn=${matricula})`,
       scope: 'sub',
       attributes: ['*']
@@ -42,12 +40,28 @@ async reset(matricula : string) : Promise<any>  {
   return new Promise(async (resolve, rejet) => {
      const ai = await client.search(this.config.get('BUSCA'),opts,  (err, res)=> {
       if (err) {
+	console.log("aquiiiiiii")
+	console.log(err)
         resolve({...err,code:500})
       } else {
           res.on('searchEntry', async (entry) => {
             let userDN = entry.object.dn;
-            const newSenha = `${Math.round(Math.random() * (9-0) +0)}${Math.round(Math.random() * (9-0) +0)}${Math.round(Math.random() * (9-0) +0)}${Math.round(Math.random() * (9-0) +0)}`
-             await client.modify(userDN, [
+	    console.log("kkkkkkkkkkkkkkkkkkkkkkkkk")
+		let cpf = null
+		let data = null
+		 entry.attributes.forEach((e)=>{
+		if(e.type == 'metaCPF'){
+		cpf = e._vals
+		console.log(cpf[0].toString().substr(0,2))
+		}
+		if(e.type == 'metaBirthDate'){
+		data = e._vals
+		console.log(data[0].toString().substr(6))
+		}
+		})
+	    //console.log(entry.attributes)
+            const newSenha = `${Math.round(Math.random() * (9-0) +0)}${Math.round(Math.random() * (9-0) +0)}${Math.round(Math.random() * (9-0) +0)}${Math.round(Math.random() * (9-0) +0)};
+	       await client.modify(userDN, [
                new ldap.Change({
                    operation: 'replace',
                    modification: {
@@ -55,10 +69,14 @@ async reset(matricula : string) : Promise<any>  {
                    }
                })
            ], (err)=> {
-               if (err) {
+		console.log(err);
+	       if (err) {
+		console.log("erro")
                resolve({...err,code:500})
                }
                else {
+		console.log("senha")
+		console.log(newSenha);
                 resolve({code:200,senha:newSenha})
                }
            });
@@ -67,11 +85,14 @@ async reset(matricula : string) : Promise<any>  {
           res.on('searchReference',  (referral) =>{
               console.log('referral: ' + referral.uris.join());
           });
-          res.on('error',  (err)=> {
+          
+	res.on('error',  (err)=> {
+	console.log("eqoo a	ui")
             resolve({...err,code:500})
           });
-          res.on('end',  (result)=> {
-               return 'fim';
+         
+	res.on('end',  (result)=> {
+		resolve('fim');
           });
       }
   })
