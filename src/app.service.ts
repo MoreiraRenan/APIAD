@@ -56,7 +56,7 @@ export class AppService {
                 let data = null;
                 entry.attributes.forEach((e) => {
                   if (e.type == 'metaCPF') {
-                    cpf = e._vals[0].toString().substr(0, 2);
+                    cpf = e._vals[0].toString().substr(0, 3);
                     console.log(cpf);
                   }
                   if (e.type == 'metaBirthDate') {
@@ -82,14 +82,14 @@ export class AppService {
                     }),
                   ],
                   (err) => {
-                    console.log(err);
+                    
                     if (err) {
                       console.log('erro');
                       rejet({ ...err, code: 500 });
                     } else {
                       console.log('senha');
                       console.log(newSenha);
-                      resolve({ code: 200, senha: newSenha });
+                      resolve({ code: 200, data:'Novasenha' ,senha: newSenha });
                     }
                   },
                 );
@@ -114,7 +114,6 @@ export class AppService {
             }
           },
         );
-        console.log(ai)
       });
     } catch (error) {
       return error;
