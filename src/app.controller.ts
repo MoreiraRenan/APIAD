@@ -5,9 +5,9 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('reset/:matricula')
-  async getHello(@Param('matricula') matricula: string ) {
-    return await this.appService.reset(matricula,'123','01');
+  @Get('reset/:matricula/:cpf/:data')
+  async getHello(@Param('matricula') matricula: string,@Param('cpf') cpf: string ,@Param('data') data: string ) {
+    return await this.appService.reset(matricula,cpf,data);
   }
 @Get('teste')
 async getT(){

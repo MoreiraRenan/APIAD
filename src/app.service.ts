@@ -51,7 +51,6 @@ export class AppService {
               rejet({ ...err, code: 500 });
             } else {
               res.on('searchEntry', async (entry) => {
-                console.log("renananannanananananananaananana")
                 let userDN = entry.object.dn;
                 let cpf = null;
                 let data = null;
@@ -108,7 +107,6 @@ export class AppService {
               });
 
               res.on('end',  (result)=> {
-                console.log(result)
                 setTimeout(() => {
                     resolve('fim');
                 }, 8000);
