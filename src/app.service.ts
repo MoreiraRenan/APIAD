@@ -50,7 +50,6 @@ export class AppService {
               console.log(err);
               rejet({ ...err, code: 500 });
             } else {
-
               res.on('searchEntry', async (entry) => {
                 console.log("renananannanananananananaananana")
                 let userDN = entry.object.dn;
@@ -107,9 +106,17 @@ export class AppService {
               res.on('error', (err) => {
                 rejet({ ...err, code: 500 });
               });
+
+              res.on('end',  (result)=> {
+                console.log(result)
+                setTimeout(() => {
+                    resolve('fim');
+                }, 8000);
+                  });
             }
           },
         );
+        console.log(ai)
       });
     } catch (error) {
       return error;
